@@ -4883,8 +4883,7 @@
       "https://dex.explorer.dexstats.info/"
     ],
     "active": false,
-    "currently_enabled": false,
-    "wallet_only": true
+    "currently_enabled": false
   },
   "RICK": {
     "coin": "RICK",
