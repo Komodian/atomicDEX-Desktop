@@ -1,7 +1,4 @@
 # Default project values
-set(DEX_API "mm2")
-set(DEX_RPCPORT 7783)
-set(DEX_RPC "http://127.0.0.1:7783")
 set(DEX_PROJECT_NAME "atomicdex-desktop")
 set(DEX_DISPLAY_NAME "AtomicDEX Desktop")
 set(DEX_MAINTENANCE_TOOL_NAME "AtomicDEX Maintenance Tool")
@@ -10,9 +7,9 @@ set(DEX_WEBSITE "https://atomicdex.io/")
 set(DEX_SUPPORT_PAGE "https://support.komodoplatform.com/support/home")
 set(DEX_DISCORD "https://komodoplatform.com/discord")
 set(DEX_TWITTER "https://twitter.com/AtomicDEX")
-set(DEX_PRIMARY_COIN "LTC")                                                         ## Main coin of the DEX, will be enabled by default and will be the default left ticker for trading
-set(DEX_SECOND_PRIMARY_COIN "KMD")                                                  ## Second main coin of the DEX, will be enabled by default and will be the default right ticker for trading
-option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
+set(DEX_PRIMARY_COIN "KMD")                                                         ## Main coin of the DEX, will be enabled by default and will be the default left ticker for trading
+set(DEX_SECOND_PRIMARY_COIN "LTC")                                                  ## Second main coin of the DEX, will be enabled by default and will be the default right ticker for trading
+option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" ON)
 set(DEX_REPOSITORY_OWNER ${DEX_COMPANY})
 set(DEX_REPOSITORY_NAME "atomicDEX-Desktop")
 set(DEX_CHECKSUM_API_URL "https://komodo.live/static/checksum.json")
@@ -21,20 +18,13 @@ if (APPLE)
 else ()
     set(DEX_APPDATA_FOLDER "atomic_qt")
 endif ()
+message(STATUS "APPDATA folder is ${DEX_APPDATA_FOLDER}")
+
 if (UNIX AND NOT APPLE)
     set(DEX_LINUX_APP_ID "dex.desktop")
 endif ()
 
 # Erases default project values with environment variables if they exist.
-if (DEFINED ENV{DEX_API})
-    set(DEX_API $ENV{DEX_API})
-endif ()
-if (DEFINED ENV{DEX_RPCPORT})
-    set(DEX_RPCPORT $ENV{DEX_RPCPORT})
-endif ()
-if (DEFINED ENV{DEX_RPC})
-    set(DEX_RPC $ENV{DEX_RPC})
-endif ()
 if (DEFINED ENV{DEX_PROJECT_NAME})
     set(DEX_PROJECT_NAME $ENV{DEX_PROJECT_NAME})
 endif ()
@@ -47,25 +37,9 @@ endif ()
 if (DEFINED ENV{DEX_WEBSITE})
     set(DEX_WEBSITE $ENV{DEX_WEBSITE})
 endif ()
-if (DEFINED ENV{PROJECT_ROOT})
-    set(PROJECT_ROOT $ENV{PROJECT_ROOT})
-else ()
-    set(PROJECT_ROOT ${CMAKE_SOURCE_DIR})
-endif ()
-
 
 # Shows project metadata
-message(STATUS "Project Metadata:")
-message(STATUS "DEX_APPDATA_FOLDER --> ${DEX_APPDATA_FOLDER}")
-message(STATUS "CMAKE_BUILD_TYPE --> ${CMAKE_BUILD_TYPE}")
-message(STATUS "DEX_PROJECT_NAME --> ${DEX_PROJECT_NAME}")
-message(STATUS "DEX_DISPLAY_NAME --> ${DEX_DISPLAY_NAME}")
-message(STATUS "DEX_COMPANY --> ${DEX_COMPANY}")
-message(STATUS "DEX_WEBSITE --> ${DEX_WEBSITE}")
-message(STATUS "CMAKE_SOURCE_DIR --> ${CMAKE_SOURCE_DIR}")
-message(STATUS "PROJECT_ROOT --> ${PROJECT_ROOT}")
-
-
+message(STATUS "Project Metadata: ${DEX_PROJECT_NAME}.${DEX_DISPLAY_NAME}.${DEX_COMPANY}.${DEX_WEBSITE}")
 
 # Generates files which need to be configured with custom variables from env/CMake.
 macro(generate_dex_project_metafiles)
