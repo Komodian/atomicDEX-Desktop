@@ -1411,7 +1411,7 @@
     "name": "CAD Coin",
     "forex_id": "CAD",
     "coinpaprika_id": "cadc-cad-coin",
-    "coingecko_id": "test-coin",
+    "coingecko_id": "cad-coin",
     "nomics_id": "CADC",
     "nodes": [
       "http://eth1.cipig.net:8555",
@@ -1430,7 +1430,7 @@
     "name": "CAD Coin",
     "forex_id": "CAD",
     "coinpaprika_id": "cadc-cad-coin",
-    "coingecko_id": "test-coin",
+    "coingecko_id": "cad-coin",
     "nomics_id": "CADC",
     "nodes": [
       "https://polygon-rpc.com"
@@ -1585,6 +1585,7 @@
     "name": "Collider Coin",
     "coinpaprika_id": "clc-collider-coin",
     "coingecko_id": "test-coin",
+    "nomics_id": "CLC2",
     "electrum": [
       {
         "url": "electrumx.cryptocollider.com:10001"
@@ -3565,6 +3566,29 @@
     "active": false,
     "currently_enabled": false
   },
+  "GMS": {
+    "coin": "GMS",
+    "type": "Smart Chain",
+    "name": "GMSmining",
+    "coingecko_id": "test-coin",
+    "coinpaprika_id": "test-coin",
+    "electrum": [
+      {
+        "url": "electrum.gmsmining.pw:17485"
+      },
+	  {
+        "url": "electrum1.gmsmining.pw:17485"
+      },
+      {
+        "url": "electrum2.gmsmining.pw:17485"
+      }
+    ],
+    "explorer_url": [
+      "https://explorer.gmsmining.pw/"
+    ],
+    "active": false,
+    "currently_enabled": false
+  },
   "MIR-ERC20": {
     "coin": "MIR-ERC20",
     "name": "Mirror Protocol",
@@ -5136,6 +5160,7 @@
     "name": "SmartFi",
     "coinpaprika_id": "smtf-smartfi",
     "coingecko_id": "test-coin",
+    "nomics_id": "SMTF",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -5269,6 +5294,7 @@
     "name": "Chips",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "chips-chips",
+    "nomics_id": "CHIPS6",
     "electrum": [
       {
         "url": "electrum3.cipig.net:10053",
@@ -5295,6 +5321,7 @@
     "type": "UTXO",
     "coingecko_id": "test-coin",
     "coinpaprika_id": "sca-scalaris",
+    "nomics_id": "SCA2",
     "electrum": [
       {
         "url": "electrum1.scalaris.info:10001"
@@ -5525,6 +5552,7 @@
     "name": "InfiniLooP",
     "coinpaprika_id": "il8p-infiniloop",
     "coingecko_id": "test-coin",
+    "nomics_id": "IL8P",
     "electrum": [
       {
         "url": "il8p.electrumx.transcenders.name:50002",
@@ -5915,6 +5943,7 @@
     "name": "QuarkChain",
     "coinpaprika_id": "qkc-quarkchain",
     "coingecko_id": "quark-chain",
+    "nomics_id": "QKC",
     "nodes": [
       "http://bsc1.cipig.net:8655",
       "http://bsc2.cipig.net:8655",
@@ -5932,6 +5961,7 @@
     "name": "QuarkChain",
     "coinpaprika_id": "qkc-quarkchain",
     "coingecko_id": "quark-chain",
+    "nomics_id": "QKC",
     "nodes": [
       "http://eth1.cipig.net:8555",
       "http://eth2.cipig.net:8555",
@@ -7144,9 +7174,9 @@
     "active": false,
     "currently_enabled": false
   },
-  "ZET": {
-    "coin": "ZET",
-    "name": "Zetacoin",
+  "ZET-OLD": {
+    "coin": "ZET-OLD",
+    "name": "Zetacoin (OLD)",
     "coinpaprika_id": "zet-zetacoin",
     "coingecko_id": "zetacoin",
     "nomics_id": "ZET",
@@ -7155,9 +7185,26 @@
         "url": "failover.zet.ewmci.xyz:50002",
         "protocol": "SSL",
         "disable_cert_verification": true
-      },
+      }
+    ],
+    "explorer_url": [
+      "https://chainz.cryptoid.info/zet-old/"
+    ],
+    "explorer_tx_url": "tx.dws?",
+    "explorer_address_url": "address.dws?",
+    "type": "UTXO",
+    "active": false,
+    "currently_enabled": false
+  },
+  "ZET": {
+    "coin": "ZET",
+    "name": "Zetacoin",
+    "coinpaprika_id": "zet-zetacoin",
+    "coingecko_id": "zetacoin",
+    "nomics_id": "ZET",
+    "electrum": [
       {
-        "url": "electrumx.zet.ewmcx.info:50001",
+        "url": "207.180.252.200:50011",
         "protocol": "TCP"
       }
     ],
