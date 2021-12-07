@@ -5,7 +5,7 @@ set(DEX_MAINTENANCE_TOOL_NAME "AtomicDEX Maintenance Tool")
 set(DEX_COMPANY "KomodoPlatform")
 set(DEX_WEBSITE "https://atomicdex.io/")
 set(DEX_SUPPORT_PAGE "https://support.komodoplatform.com/support/home")
-set(DEX_DISCORD "https://komodian.org/discord")
+set(DEX_DISCORD "https://discord.gg/euuHtKfJEu")
 set(DEX_TWITTER "https://twitter.com/KomodianOrg")
 set(DEX_PRIMARY_COIN "KMD")                                                         ## Main coin of the DEX, will be enabled by default and will be the default left ticker for trading
 set(DEX_SECOND_PRIMARY_COIN "LTC")                                                  ## Second main coin of the DEX, will be enabled by default and will be the default right ticker for trading
