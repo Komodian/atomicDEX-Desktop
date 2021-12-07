@@ -11,8 +11,8 @@ on:
     - cron: '0 0 * * 1'
 
 env:
-  DEX_PROJECT_NAME: "atomicdex-desktop"
-  DEX_DISPLAY_NAME: "AtomicDex Desktop"
+  DEX_PROJECT_NAME: "atomicdex-desktop-ce"
+  DEX_DISPLAY_NAME: "AtomicDex Desktop CE"
   DEX_COMPANY: "KomodoPlatform"
   DEX_WEBSITE: "https://atomicdex.io/"
 
