@@ -1,18 +1,18 @@
 # Default project values
-set(DEX_PROJECT_NAME "atomicdex-desktop")
-set(DEX_DISPLAY_NAME "AtomicDEX Desktop")
+set(DEX_PROJECT_NAME "atomicdex-desktop-ce")
+set(DEX_DISPLAY_NAME "AtomicDEX Desktop-CE")
 set(DEX_MAINTENANCE_TOOL_NAME "AtomicDEX Maintenance Tool")
 set(DEX_COMPANY "KomodoPlatform")
 set(DEX_WEBSITE "https://atomicdex.io/")
 set(DEX_SUPPORT_PAGE "https://support.komodoplatform.com/support/home")
-set(DEX_DISCORD "https://komodoplatform.com/discord")
-set(DEX_TWITTER "https://twitter.com/AtomicDEX")
+set(DEX_DISCORD "https://discord.gg/euuHtKfJEu")
+set(DEX_TWITTER "https://twitter.com/KomodianOrg")
 set(DEX_PRIMARY_COIN "KMD")                                                         ## Main coin of the DEX, will be enabled by default and will be the default left ticker for trading
 set(DEX_SECOND_PRIMARY_COIN "LTC")                                                  ## Second main coin of the DEX, will be enabled by default and will be the default right ticker for trading
-option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" OFF)
+option(DISABLE_GEOBLOCKING "Enable to disable geoblocking (for dev purpose)" ON)
 set(DEX_REPOSITORY_OWNER ${DEX_COMPANY})
-set(DEX_REPOSITORY_NAME "atomicDEX-Desktop")
-set(DEX_CHECKSUM_API_URL "https://komodo.live/static/checksum.json")
+set(DEX_REPOSITORY_NAME "atomicDEX-Desktop-CE")
+set(DEX_CHECKSUM_API_URL "https://komodian.org/checksum.json")
 if (APPLE)
     set(DEX_APPDATA_FOLDER "AtomicDex Desktop")
 else ()
@@ -21,7 +21,7 @@ endif ()
 message(STATUS "APPDATA folder is ${DEX_APPDATA_FOLDER}")
 
 if (UNIX AND NOT APPLE)
-    set(DEX_LINUX_APP_ID "dex.desktop")
+    set(DEX_LINUX_APP_ID "dex-ce.desktop")
 endif ()
 
 # Erases default project values with environment variables if they exist.
@@ -52,12 +52,10 @@ macro(generate_dex_project_metafiles)
         generate_linux_metafiles()
     endif ()
 
-    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo-sidebar.png
-            ${CMAKE_CURRENT_LIST_DIR}/atomic_defi_design/assets/images/dex-logo-sidebar.png COPYONLY)
+    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo-big.png
+            ${CMAKE_CURRENT_LIST_DIR}/atomic_defi_design/assets/images/dex-logo-big.png COPYONLY)
     configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo.png
             ${CMAKE_CURRENT_LIST_DIR}/atomic_defi_design/assets/images/logo/dex-logo.png COPYONLY)
-    configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-logo-sidebar-dark.png
-            ${CMAKE_CURRENT_LIST_DIR}/atomic_defi_design/assets/images/dex-logo-sidebar-dark.png COPYONLY)
     configure_file(${CMAKE_CURRENT_LIST_DIR}/assets/logo/dex-tray-icon.png
             ${CMAKE_CURRENT_LIST_DIR}/atomic_defi_design/assets/images/dex-tray-icon.png COPYONLY)
 endmacro()
