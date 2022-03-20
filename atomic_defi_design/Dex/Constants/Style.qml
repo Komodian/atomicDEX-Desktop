@@ -240,6 +240,7 @@ QtObject {
             case 'ERC-20':      return getCoinColor("ETH")
             case 'QRC-20':      return getCoinColor("QTUM")
             case 'Smart Chain': return getCoinColor("KMD")
+            case 'WALLET ONLY': return "#4D4D4D"
             case 'UTXO':        return getCoinColor("BTC")
             case 'BEP-20':      return getCoinColor("BNB")
             case 'SLP':         return getCoinColor("BCH")
@@ -253,6 +254,7 @@ QtObject {
             case 'Ubiq':        return getCoinColor("UBQ")
             case 'KRC-20':      return getCoinColor("KCS")
             case 'Moonriver':   return getCoinColor("MOVR")
+            case 'Moonbeam':    return getCoinColor("GLMR")
             case 'HecoChain':   return getCoinColor("HECO")
             case 'SmartBCH':    return getCoinColor("SBCH")
             case 'Ethereum Classic':  return getCoinColor("ETC")
@@ -296,6 +298,7 @@ QtObject {
                                           "BTC": "#E9983C",
                                           "RBTC": "#E9983C",
                                           "BTT": "#666666",
+                                          "BTTC": "#666666",
                                           "BTE": "#FFE201",
                                           "BTX": "#FB30A6",
                                           "CAKE": "#D1884F",
@@ -309,14 +312,17 @@ QtObject {
                                           "DUST": "#6A032F",
                                           "EOS": "#4D4D4D",
                                           "FET": "#202944",
+                                          "FLOW": "#00EF8B",
                                           "FTC": "#FFFFFF",
                                           "FTM": "#13B5EC",
+                                          "GALA": "#011B36",
                                           "GLEEC": "#8C41FF",
                                           "GRMS": "#12B690",
                                           "GMS": "#0BFBE2",
                                           "GRS": "#377E96",
                                           "GRT": "#6E54DB",
                                           "IOTA": "#404040",
+                                          "IC": "#72009D",
                                           "JSTR": "#627EEA",
                                           "DOGE": "#C3A634",
                                           "ETC": "#328432",
@@ -324,6 +330,7 @@ QtObject {
                                           "ETHR": "#627EEA",
                                           "KMD": "#7490AA",
                                           "KCS": "#25AF90",
+                                          "KSM": "#595959",
                                           "MORTY": "#A4764D",
                                           "RICK": "#A5CBDD",
                                           "EMC2": "#00CCFF",
@@ -331,6 +338,7 @@ QtObject {
                                           "JPYC": "#16449A",
                                           "DASH": "#008CE7",
                                           "RVN": "#384182",
+                                          "SAND": "#05C1F4",
                                           "CADC": "#FF6666",
                                           "DGB": "#006AD2",
                                           "DIA": "#B94897",
@@ -365,6 +373,7 @@ QtObject {
                                           "MGW": "#854F2F",
                                           "MONA": "#DEC799",
                                           "MOVR": "#52CCC9",
+                                          "GLMR": "#F6007C",
                                           "NMC": "#186C9D",
                                           "NZDS": "#1B3044",
                                           "RFOX": "#D83331",
@@ -392,6 +401,7 @@ QtObject {
                                           "HUSD": "#0075FB",
                                           "DAI": "#B68900",
                                           "USDC": "#317BCB",
+                                          "USDI": "#C29E47",
                                           "USDT": "#26A17B",
                                           "PAX": "#408C69",
                                           "PAXG": "#DABE37",
@@ -469,6 +479,7 @@ QtObject {
                                           "SFUSD": "#9881B8",
                                           "SNT": "#596BED",
                                           "SNX": "#00D1FF",
+                                          "SOL": "#7BFBB5",
                                           "SOULJA": "#8F734A",
                                           "STFIRO": "#00D4F7",
                                           "STORJ": "#2683FF",
@@ -487,6 +498,7 @@ QtObject {
                                           "VRM": "#586A7A",
                                           "WSB": "#FEBB84",
                                           "WBTC": "#CCCCCC",
+                                          "WHIVE": "#FFCC00",
                                           "XEC": "#273498",
                                           "XEP": "#0277E5",
                                           "XLM": "#737373",
