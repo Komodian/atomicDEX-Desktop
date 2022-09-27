@@ -24,6 +24,7 @@ Item
 
     Component.onCompleted:
     {
+        API.app.trading_pg.on_gui_enter_dex()
         if (dashboard.current_ticker!==undefined)
         {
             onOpened(dashboard.current_ticker)
@@ -34,6 +35,8 @@ Item
         }
         dashboard.current_ticker = undefined
     }
+
+    Component.onDestruction: API.app.trading_pg.on_gui_leave_dex()
 
     readonly property bool block_everything: swap_cooldown.running
                                              || fetching_multi_ticker_fees_busy
@@ -93,27 +96,18 @@ Item
     {
         if (!General.initialized_orderbook_pair)
         {
-            if (API.app.trading_pg.current_trading_mode == TradingMode.Pro)
-            {
-                API.app.trading_pg.set_current_orderbook(General.default_base,
-                                                     General.default_rel)
-            }
-            else
-            {
-                API.app.trading_pg.set_current_orderbook(General.default_rel,
-                                                     General.default_base)
-            }
             General.initialized_orderbook_pair = true
+            API.app.trading_pg.set_current_orderbook(General.default_base,
+                                                     General.default_rel)
         }
         setPair(true, ticker)
-        // triggers chart reload (why the duplication?)
-        // app.pairChanged(base_ticker, rel_ticker)
+        app.pairChanged(base_ticker, rel_ticker)
     }
 
-    function setPair(is_left_side, changed_ticker, is_swap=false) {
+    function setPair(is_left_side, changed_ticker) {
         swap_cooldown.restart()
-        if (API.app.trading_pg.set_pair(is_left_side, changed_ticker, is_swap))
-            // triggers chart reload
+
+        if (API.app.trading_pg.set_pair(is_left_side, changed_ticker))
             app.pairChanged(base_ticker, rel_ticker)
     }
 

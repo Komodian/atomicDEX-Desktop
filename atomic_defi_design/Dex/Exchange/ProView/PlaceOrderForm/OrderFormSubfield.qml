@@ -8,7 +8,6 @@ import "../../../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
-// todo: coding style is wrong, use camelCase.
 RowLayout
 {
     id: control
@@ -219,6 +218,7 @@ RowLayout
         id: _fiat_label
         font.pixelSize: pixel_size
         color: Dex.CurrentTheme.foregroundColor2
-        DefaultInfoTrigger { triggerModal: cex_info_modal }
+
+        CexInfoTrigger {}
     }
 }

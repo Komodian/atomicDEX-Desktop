@@ -25,8 +25,6 @@
 #include <boost/algorithm/string/case_conv.hpp>
 
 // Project Headers
-#include "atomicdex/api/mm2/get_public_key_rpc.hpp"
-#include "atomicdex/config/enable.cfg.hpp"
 #include "atomicdex/events/events.hpp"
 #include "atomicdex/managers/qt.wallet.manager.hpp"
 #include "atomicdex/models/qt.global.coins.cfg.model.hpp"
@@ -37,6 +35,7 @@
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/utilities/global.utilities.hpp"
 #include "atomicdex/utilities/qt.utilities.hpp"
+#include "atomicdex/api/mm2/get_public_key_rpc.hpp"
 
 namespace
 {
@@ -100,10 +99,6 @@ namespace atomic_dex
             else if (current_lang == "en")
             {
                 return QLocale::Language::English;
-            }
-            else if (current_lang == "es")
-            {
-                return QLocale::Language::Spanish;
             }
             else if (current_lang == "de")
             {
@@ -399,7 +394,7 @@ namespace atomic_dex
                     out["adex_cfg"][ticker]["gui_coin"]          = ticker;
                     out["adex_cfg"][ticker]["name"]              = body_json.at("qrc20").at("name").get<std::string>();
                     out["adex_cfg"][ticker]["coingecko_id"]      = coingecko_id.toStdString();
-                    out["adex_cfg"][ticker]["explorer_url"]      = "https://explorer.qtum.org/";
+                    out["adex_cfg"][ticker]["explorer_url"]      = nlohmann::json::array({"https://explorer.qtum.org/"});
                     out["adex_cfg"][ticker]["type"]              = "QRC-20";
                     out["adex_cfg"][ticker]["active"]            = true;
                     out["adex_cfg"][ticker]["currently_enabled"] = false;
@@ -507,7 +502,7 @@ namespace atomic_dex
                     out["adex_cfg"][ticker]["name"]              = name_lowercase;
                     out["adex_cfg"][ticker]["coingecko_id"]      = coingecko_id.toStdString();
                     const auto& coin_info                        = mm2.get_coin_info(parent_chain);
-                    out["adex_cfg"][ticker]["nodes"]             = coin_info.urls.value_or(std::vector<node>());
+                    out["adex_cfg"][ticker]["nodes"]             = coin_info.urls.value_or(std::vector<std::string>());
                     out["adex_cfg"][ticker]["explorer_url"]      = coin_info.explorer_url;
                     out["adex_cfg"][ticker]["type"]              = adex_platform;
                     out["adex_cfg"][ticker]["active"]            = true;

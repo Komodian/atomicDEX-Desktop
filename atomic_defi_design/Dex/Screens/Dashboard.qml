@@ -82,20 +82,7 @@ Item
 
     Layout.fillWidth: true
 
-    onCurrentPageChanged: {
-        sidebar.currentLineType = currentPage
-        if (currentPage == Dashboard.PageType.DEX)
-        {
-            if (API.app.trading_pg.current_trading_mode == TradingMode.Pro)
-            {
-                API.app.trading_pg.set_pair(false, api_wallet_page.ticker)
-            }
-            else
-            {
-                API.app.trading_pg.set_pair(true, api_wallet_page.ticker)
-            }
-        }
-    }
+    onCurrentPageChanged: sidebar.currentLineType = currentPage
 
     SupportPage.SupportModal { id: support_modal }
 
@@ -159,6 +146,16 @@ Item
             id: addressbook
 
             Addressbook.Main { }
+        }
+
+        Component
+        {
+            id: settings
+
+            Settings
+            {
+                Layout.alignment: Qt.AlignCenter
+            }
         }
 
         WebEngineView
@@ -285,14 +282,8 @@ Item
     // CEX Rates info
     ModalLoader
     {
-        id: cex_info_modal
+        id: cex_rates_modal
         sourceComponent: CexInfoModal {}
-    }
-
-    ModalLoader
-    {
-        id: gas_info_modal
-        sourceComponent: GasInfoModal {}
     }
 
     ModalLoader

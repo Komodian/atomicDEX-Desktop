@@ -16,27 +16,25 @@ MultipageModal
     property var portfolio_model: API.app.portfolio_pg.portfolio_mdl
     property var settings_page: API.app.settings_pg
 
-    property bool _isPasswordWrong: false
+    property bool wrongPassword: false
 
     function tryViewKeysAndSeed()
     {
         if (!submitButton.enabled) return
 
-        const result = API.app.settings_pg.retrieve_seed(API.app.wallet_mgr.wallet_default_name, _inputPassword.field.text)
+        const result = API.app.settings_pg.retrieve_seed(API.app.wallet_mgr.wallet_default_name, inputPassword.field.text)
 
         if (result.length === 2)
         {
             seedLabel.text = result[0]
             rpcPwLabel.text = result[1]
-            _isPasswordWrong = false
+            wrongPassword = false
             root.nextPage()
             loading.running = true
         }
         else
         {
-            _inputPassword.error = true;
-            _isPasswordWrong = true;
-            return false;
+            wrongPassword = true
         }
     }
 
@@ -44,8 +42,8 @@ MultipageModal
 
     onClosed:
     {
-        _isPasswordWrong = false
-        _inputPassword.reset()
+        wrongPassword = false
+        inputPassword.reset()
         seedLabel.text = ""
         rpcPwLabel.text = ""
         portfolio_model.clean_priv_keys()
@@ -63,24 +61,13 @@ MultipageModal
 
         DexAppPasswordField
         {
-            id: _inputPassword
-            forceFocus: true
+            id: inputPassword
             Layout.fillWidth: true
-            Layout.margins: 20
-            Layout.alignment: Qt.AlignHCenter
+            forceFocus: true
             field.onAccepted: tryViewKeysAndSeed()
+            background.color: Dex.CurrentTheme.floatingBackgroundColor
             leftIconColor: Dex.CurrentTheme.foregroundColor
-            field.onTextChanged: { _isPasswordWrong = false }
-            background.color: Dex.CurrentTheme.accentColor            
             hideFieldButton.icon.color: Dex.CurrentTheme.foregroundColor
-        }
-
-        DexLabel
-        {
-            Layout.alignment: Qt.AlignHCenter
-            height: 14
-            text: _isPasswordWrong ? qsTr("Incorrect Password") : ""
-            color: Dex.CurrentTheme.noColor
         }
 
         // Footer
@@ -99,7 +86,7 @@ MultipageModal
             {
                 id: submitButton
                 Layout.preferredWidth: parent.width / 100 * 48
-                enabled: _inputPassword.field.length > 0
+                enabled: inputPassword.field.length > 0
                 text: qsTr("View")
                 onClicked: tryViewKeysAndSeed()
             }
@@ -434,7 +421,7 @@ MultipageModal
                                     TextMetrics {
                                         id: textMetrics
                                         elide: Text.ElideMiddle
-                                        font.family: DexTypo.fontFamily
+                                        font.family: fontFamily
                                         elideWidth: 560
                                         text: model.priv_key
                                     }

@@ -6,10 +6,10 @@ import Qaterial 1.0 as Qaterial
 
 import "../../../Components"
 import "../../../Constants"
-import App 1.0 as App
 import Dex.Themes 1.0 as Dex
-import Dex.Components 1.0 as Dex
 import AtomicDEX.MarketMode 1.0
+import App 1.0 as App
+import Dex.Components 1.0 as Dex
 
 Item
 {
@@ -170,13 +170,14 @@ Item
                 placeOrderForm.visible = General.flipFalse(placeOrderForm.visible)
                 if (API.app.trading_pg.market_mode == MarketMode.Buy)
                 {
-                    app.pairChanged(coin, rel_ticker)
+                    app.pairChanged(rel_ticker, coin)
                 }
                 else
                 {
                     app.pairChanged(base_ticker, coin)
                 }
                 API.app.trading_pg.orderbook.select_best_order(uuid)
+                orderSelected()
             }
         }
     }

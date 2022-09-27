@@ -91,13 +91,11 @@ MultipageModal
 
     function feeIsHigherThanAmount() {
 
-        if (!custom_fees_switch.checked) return false
-
-        if (input_amount.text === "") return false
+        if(!custom_fees_switch.checked) return false
 
         const amount = parseFloat(getCryptoAmount())
 
-        if (General.isSpecialToken(current_ticker_infos)) {
+        if(General.isSpecialToken(current_ticker_infos)) {
             const parent_ticker = General.getFeesTicker(current_ticker_infos)
             const gas_limit = parseFloat(input_custom_fees_gas.text)
             const gas_price = parseFloat(input_custom_fees_gas_price.text)
@@ -278,11 +276,7 @@ MultipageModal
                 placeholderText: qsTr("Address of the recipient")
                 forceFocus: true
                 font: General.isZhtlc(api_wallet_page.ticker) ? DexTypo.body3 : DexTypo.body2
-                onTextChanged: 
-                {
-                    text = text.replace(/(\r\n|\n|\r)/gm,"").replace(" ", "")
-                    api_wallet_page.validate_address(text)
-                }
+                onTextChanged: api_wallet_page.validate_address(text)
             }
 
             Rectangle
@@ -562,7 +556,6 @@ MultipageModal
 
         ColumnLayout
         {
-            visible: General.getCustomFeeType(current_ticker_infos)
             Layout.preferredWidth: 380
             Layout.alignment: Qt.AlignHCenter
             Layout.topMargin: 32
@@ -580,38 +573,15 @@ MultipageModal
                 label.wrapMode: Label.NoWrap
             }
 
-            RowLayout
+            // Custom fees warning
+            DefaultText
             {
                 visible: custom_fees_switch.checked
-                // Custom fees warning
-                DefaultText
-                {
-                    font.pixelSize: 14
-                    Layout.alignment: Qt.AlignHCenter
-                    horizontalAlignment: DefaultText.AlignHCenter
-                    color: Dex.CurrentTheme.noColor
-                }
-
-                DefaultText
-                {
-                    visible: input_custom_fees.visible
-                    font.pixelSize: 14
-                    Layout.alignment: Qt.AlignHCenter
-                    horizontalAlignment: DefaultText.AlignHCenter
-                    color: Dex.CurrentTheme.noColor
-                    text_value: qsTr("Only use custom fees if you know what you are doing! ")
-                }
-
-                DefaultText
-                {
-                    visible: input_custom_fees_gas.visible
-                    font.pixelSize: 14
-                    Layout.alignment: Qt.AlignHCenter
-                    horizontalAlignment: DefaultText.AlignHCenter
-                    color: Dex.CurrentTheme.noColor
-                    text_value: qsTr("Only use custom fees if you know what you are doing! ") + General.cex_icon
-                    DefaultInfoTrigger { triggerModal: gas_info_modal }
-                }
+                font.pixelSize: 14
+                Layout.alignment: Qt.AlignHCenter
+                horizontalAlignment: DefaultText.AlignHCenter
+                color: Dex.CurrentTheme.noColor
+                text_value: qsTr("Only use custom fees if you know what you are doing!")
             }
         }
 
@@ -627,7 +597,7 @@ MultipageModal
             // Normal coins, Custom fees input
             AmountField
             {
-                visible: General.getCustomFeeType(current_ticker_infos) == "UTXO"
+                visible: !General.isSpecialToken(current_ticker_infos) && !General.isParentCoin(api_wallet_page.ticker) || api_wallet_page.ticker == "KMD"
 
                 id: input_custom_fees
 
@@ -643,7 +613,7 @@ MultipageModal
             // Token coins
             ColumnLayout
             {
-                visible: General.getCustomFeeType(current_ticker_infos) == "Gas"
+                visible: (General.isSpecialToken(current_ticker_infos) || General.isParentCoin(api_wallet_page.ticker)) && !api_wallet_page.ticker == "KMD"
 
                 Layout.alignment: Qt.AlignHCenter
 
@@ -657,7 +627,7 @@ MultipageModal
                     Layout.preferredWidth: 380
                     Layout.preferredHeight: 38
 
-                    placeholderText: qsTr("Gas Limit")
+                    placeholderText: qsTr("Gas Limit") + " [" + General.tokenUnitName(current_ticker_infos.type) + "]"
                 }
 
                 // Gas price input
@@ -735,7 +705,7 @@ MultipageModal
 
             DefaultButton
             {
-                text: qsTr("Cancel")
+                text: qsTr("Close")
 
                 Layout.alignment: Qt.AlignLeft
                 Layout.preferredWidth: parent.width / 100 * 48

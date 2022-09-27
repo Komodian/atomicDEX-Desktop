@@ -50,7 +50,6 @@
 #include "atomicdex/services/price/global.provider.hpp"
 #include "atomicdex/services/update/update.checker.service.hpp"
 #include "atomicdex/services/update/zcash.params.service.hpp"
-#include "atomicdex/utilities/qt.utilities.hpp"
 
 namespace ag = antara::gaming;
 
@@ -162,7 +161,6 @@ namespace atomic_dex
         Q_INVOKABLE bool               enable_coins(const QStringList& coins);
         Q_INVOKABLE bool               enable_coin(const QString& coin);
         Q_INVOKABLE QString            get_balance(const QString& coin);
-        Q_INVOKABLE QJsonObject        get_zhtlc_status(const QString& coin);
         Q_INVOKABLE [[nodiscard]] bool do_i_have_enough_funds(const QString& ticker, const QString& amount) const;
         Q_INVOKABLE bool               disable_coins(const QStringList& coins);
         Q_INVOKABLE bool               disable_no_balance_coins();

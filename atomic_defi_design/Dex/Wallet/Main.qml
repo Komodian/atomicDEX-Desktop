@@ -20,18 +20,16 @@ Item
 {
     id: root
     property alias send_modal: send_modal
+    readonly property int layout_margin: 20
+    readonly property string headerTitleColor: Style.colorText2
+    readonly property string headerTitleFont: Style.textSizeMid1
+    readonly property string headerTextColor: Dex.CurrentTheme.foregroundColor
+    readonly property string headerTextFont: Style.textSize
+    readonly property string headerSmallTitleFont: Style.textSizeSmall4
+    readonly property string headerSmallFont: Style.textSizeSmall2
+    readonly property string addressURL: General.getAddressExplorerURL(api_wallet_page.ticker, current_ticker_infos.address)
 
-    readonly property int       layout_margin: 20
-    readonly property string    headerTitleColor: Style.colorText2
-    readonly property string    headerTitleFont: Style.textSizeMid1
-    readonly property string    headerTextColor: Dex.CurrentTheme.foregroundColor
-    readonly property string    headerTextFont: Style.textSize
-    readonly property string    headerSmallTitleFont: Style.textSizeSmall4
-    readonly property string    headerSmallFont: Style.textSizeSmall2
-    readonly property string    addressURL: General.getAddressExplorerURL(api_wallet_page.ticker, current_ticker_infos.address)
-
-    function loadingPercentage(remaining)
-    {
+    function loadingPercentage(remaining) {
         return General.formatPercent((100 * (1 - parseFloat(remaining)/parseFloat(current_ticker_infos.current_block))).toFixed(3), false)
     }
 
@@ -533,7 +531,7 @@ Item
                 DefaultButton
                 {
                     // Address wont display until activated
-                    enabled: General.isZhtlcReady(api_wallet_page.ticker)
+                    enabled: General.isZhtlcReady(api_wallet_page.ticker, activation_progress)
                     anchors.fill: parent
                     radius: 18
 
@@ -556,7 +554,7 @@ Item
                 // Receive button error icon
                 DefaultAlertIcon
                 {
-                    visible: !General.isZhtlcReady(api_wallet_page.ticker)
+                    visible: !General.isZhtlcReady(api_wallet_page.ticker, activation_progress)
                     tooltipText: api_wallet_page.ticker + qsTr(" Activation: " + activation_progress + "%")
                 }
             }
@@ -656,51 +654,15 @@ Item
             {
                 Layout.preferredWidth: 180
                 Layout.preferredHeight: 48
-                visible:  current_ticker_infos.is_smartchain_test_coin
+                visible: enabled && current_ticker_infos.is_smartchain_test_coin
 
                 DefaultButton
                 {
-                    enabled: activation_progress == 100
-                    anchors.fill: parent
+                    text: qsTr("Faucet")
                     radius: 18
-                    label.text: qsTr("Faucet")
-                    label.font.pixelSize: 16
-                    content.anchors.left: content.parent.left
-                    content.anchors.leftMargin: enabled ? 23 : 48
-                    content.anchors.rightMargin: 23
-
+                    font.pixelSize: 16
+                    anchors.fill: parent
                     onClicked: api_wallet_page.claim_faucet()
-
-                    Row
-                    {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.right: parent.right
-                        anchors.rightMargin: arrow_send.anchors.rightMargin
-
-                        Qaterial.Icon
-                        {
-                            icon: Qaterial.Icons.water
-                            size: 24
-                            anchors.right: parent.right
-                            anchors.leftMargin: iconSize / 2
-                            anchors.rightMargin: iconSize / 2
-                            anchors.verticalCenter: parent.verticalCenter
-                            color: "cyan"
-
-                            DefaultTooltip
-                            {
-                                visible: alertArea.containsMouse && tooltipText != ""
-                                text: ""
-                            }
-                        }
-                    }
-                }
-
-                // Faucet button error icon
-                DefaultAlertIcon
-                {
-                    visible: activation_progress != 100
-                    tooltipText: api_wallet_page.ticker + qsTr(" Activation: " + activation_progress + "%")
                 }
             }
 
@@ -975,6 +937,7 @@ Item
                 {
                     width: parent.width
                     height: parent.height
+                    model: transactions_mdl.proxy_mdl
                 }
 
                 ColumnLayout
@@ -1031,7 +994,10 @@ Item
                             cursorShape: Qt.PointingHandCursor
                             anchors.fill: parent
                             hoverEnabled: true
-                            onClicked: Qt.openUrlExternally(addressURL)
+                            onClicked: {
+                                console.log(addressURL)
+                                Qt.openUrlExternally(addressURL)
+                            }
                         }
                     }
 

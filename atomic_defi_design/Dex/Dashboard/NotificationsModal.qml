@@ -15,29 +15,64 @@ import "../Screens"
 DexPopup
 {
     id: root
+    property var orders: API.app.orders_mdl.orders_proxy_mdl.ModelHelper
 
     width: 406
     height: 526
+    property
+    var default_gradient: Gradient
+    {
+        orientation: Qt.Horizontal
+        GradientStop
+        {
+            position: 0.1255
+            color: Dex.CurrentTheme.gradientButtonPressedStartColor
+        }
+        GradientStop
+        {
+            position: 0.933
+            color: Dex.CurrentTheme.gradientButtonPressedEndColor
+        }
+    }
+    property
+    var default_red_gradient: Gradient
+    {
+        orientation: Qt.Horizontal
+        GradientStop
+        {
+            position: 0.1255
+            color: Dex.CurrentTheme.tradeSellModeSelectorBackgroundColorStart
+        }
+        GradientStop
+        {
+            position: 0.933
+            color: Dex.CurrentTheme.tradeSellModeSelectorBackgroundColorEnd
+        }
+    }
+    property
+    var notification_map: [
+    {
+        icon: Qaterial.Icons.arrowTopRight,
+        color: Dex.CurrentTheme.foregroundColor,
+        gradient: default_red_gradient
+    },
+    {
+        icon: Qaterial.Icons.arrowBottomRight,
+        color: Dex.CurrentTheme.foregroundColor,
+        gradient: default_gradient
+    },
+    {
+        icon: Qaterial.Icons.messageOutline,
+        color: Dex.CurrentTheme.foregroundColor,
+        gradient: default_gradient
+    }]
     backgroundColor: Dex.CurrentTheme.floatingBackgroundColor
-
-    property var orders: API.app.orders_mdl.orders_proxy_mdl.ModelHelper
-
-    // Notification types.
-    readonly property string updateSwapStatusNotification: "onUpdateSwapStatus"
-    readonly property string balanceUpdateStatusNotification: "onBalanceUpdateStatus"
-    readonly property string enablingZCoinStatusNotification: "onEnablingZCoinStatus"
-    readonly property string enablingCoinFailedStatusNotification: "onEnablingCoinFailedStatus"
-    readonly property string disablingCoinFailedStatus: "onDisablingCoinFailedStatus"
-    readonly property string endpointNonReacheableStatus: "onEndpointNonReacheableStatus"
-
-    readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
 
     function reset()
     {
         notifications_list = []
         root.close()
     }
-
     enum NotificationKind
     {
         Send,
@@ -80,7 +115,7 @@ DexPopup
                 app.pageLoader.item.switchPage(Dashboard.PageType.DEX)
                 break
             case "open_log_modal":
-                showError(notification.getTitle(), notification.long_message)
+                showError(notification.title, notification.long_message)
                 break
             default:
                 console.warn("Unknown notification click action", notification.click_action)
@@ -88,30 +123,50 @@ DexPopup
         }
     }
 
-    function newNotification(event_name, params, id, human_date, click_action = "open_notifications", long_message = "")
+    function newNotification(event_name, params, id, title, message, human_date, click_action = "open_notifications", long_message = "")
     {
-        let obj =
+
+        let obj;
+        if (title.indexOf("You received") !== -1)
         {
-            event_name,
-            params,
-            id,
-            human_date,
-            click_action,
-            long_message,
+            obj = {
+                event_name,
+                params,
+                id,
+                title,
+                message,
+                human_date,
+                click_action,
+                long_message,
+                kind: NotificationsModal.NotificationKind.Receive
+            }
         }
+        else if (title.indexOf("You sent") !== -1)
         {
-            let notifTitle = getNotificationTitle(obj)
-            if (notifTitle.indexOf("You received") !== -1)
-            {
-                obj.kind = NotificationsModal.NotificationKind.Receive
+            obj = {
+                event_name,
+                params,
+                id,
+                title,
+                message,
+                human_date,
+                click_action,
+                long_message,
+                kind: NotificationsModal.NotificationKind.Send
             }
-            else if (notifTitle.indexOf("You sent") !== -1)
-            {
-                obj.kind = NotificationsModal.NotificationKind.Send
-            }
-            else
-            {
-                obj.kind = NotificationsModal.NotificationKind.Others
+        }
+        else
+        {
+            obj = {
+                event_name,
+                params,
+                id,
+                title,
+                message,
+                human_date,
+                click_action,
+                long_message,
+                kind: NotificationsModal.NotificationKind.Others
             }
         }
 
@@ -134,13 +189,13 @@ DexPopup
         }
 
         // Display OS notification
-        if (API.app.settings_pg.notification_enabled)
-            tray.showMessage(getNotificationTitle(obj), getNotificationMsg(obj))
+        displayMessage(obj.title, obj.message)
 
         // Refresh the list if updated an existing one
         if (updated_existing_one)
             notifications_list = notifications_list
     }
+
 
     function getOrderStatusText(status, short_text = false)
     {
@@ -163,62 +218,10 @@ DexPopup
         }
     }
 
-    function getNotificationTitle(notification)
-    {
-        switch (notification.event_name)
-        {
-        case updateSwapStatusNotification:
-            return notification.params.base_coin + "/" + notification.params.rel_coin + " - " + qsTr("Swap status updated")
-        case balanceUpdateStatusNotification:
-            const change = General.formatFullCrypto("", notification.params.amount, notification.params.ticker, "", "", true)
-            return notification.params.am_i_sender ? qsTr("You sent %1").arg(change) : qsTr("You received %1").arg(change)
-        case enablingZCoinStatusNotification:
-            return qsTr(" %1 Enable status", "TICKER").arg(notification.params.coin)
-        case enablingCoinFailedStatusNotification:
-            return qsTr("Failed to enable %1", "TICKER").arg(notification.params.coin)
-        case disablingCoinFailedStatus:
-            return qsTr("Failed to disable %1", "TICKER").arg(notification.params.coin)
-        case endpointNonReacheableStatus:
-            return qsTr("Endpoint not reachable")
-        }
-    }
-
-    function getNotificationMsg(notification)
-    {
-        switch (notification.event_name)
-        {
-        case updateSwapStatusNotification:
-            return getOrderStatusText(notification.params.old_swap_status) + " " + General.right_arrow_icon + " " + getOrderStatusText(notification.params.new_swap_status)
-        case balanceUpdateStatusNotification:
-            return qsTr("Your wallet balance changed")
-        case enablingZCoinStatusNotification:
-            return notification.params.msg
-        case enablingCoinFailedStatusNotification:
-            return check_internet_connection_text
-        case disablingCoinFailedStatus:
-            return ""
-        case endpointNonReacheableStatus:
-            return notification.params.base_uri
-        }
-    }
-
-    function getNotificationIcon(notification)
-    {
-        switch (notification.kind)
-        {
-        case NotificationsModal.NotificationKind.Send:
-            return Qaterial.Icons.arrowTopRight
-        case NotificationsModal.NotificationKind.Receive:
-            return Qaterial.Icons.arrowBottomRight
-        case NotificationsModal.NotificationKind.Others:
-            return Qaterial.Icons.messageOutline
-        }
-    }
-
+    // Events
     function onUpdateSwapStatus(old_swap_status, new_swap_status, swap_uuid, base_coin, rel_coin, human_date)
     {
-        newNotification(
-            updateSwapStatusNotification,
+        newNotification("onUpdateSwapStatus",
             {
                 old_swap_status,
                 new_swap_status,
@@ -228,30 +231,30 @@ DexPopup
                 human_date
             },
             swap_uuid,
+            base_coin + "/" + rel_coin + " - " + qsTr("Swap status updated"),
+            getOrderStatusText(old_swap_status) + " " + General.right_arrow_icon + " " + getOrderStatusText(new_swap_status),
             human_date,
             "open_swaps_page")
     }
 
     function onBalanceUpdateStatus(am_i_sender, amount, ticker, human_date, timestamp)
     {
-        
+        const change = General.formatFullCrypto("", amount, ticker, "", "", true)
         if (!app.segwit_on)
         {
-            if (amount != 0)
-            {
-                newNotification(
-                    balanceUpdateStatusNotification,
-                    {
-                        am_i_sender,
-                        amount,
-                        ticker,
-                        human_date,
-                        timestamp
-                    },
-                    timestamp,
+            newNotification("onBalanceUpdateStatus",
+                {
+                    am_i_sender,
+                    amount,
+                    ticker,
                     human_date,
-                    "open_wallet_page")
-            }
+                    timestamp
+                },
+                timestamp,
+                am_i_sender ? qsTr("You sent %1").arg(change) : qsTr("You received %1").arg(change),
+                qsTr("Your wallet balance changed"),
+                human_date,
+                "open_wallet_page")
         }
         else
         {
@@ -268,20 +271,24 @@ DexPopup
             return
         }
 
-        newNotification(
-            enablingZCoinStatusNotification,
+        // Display the notification
+        const title = qsTr(" %1 Enable status", "TICKER").arg(coin)
+
+        newNotification("onEnablingZCoinStatus",
             {
                 coin,
-                msg,
                 human_date,
                 timestamp
             },
             timestamp,
+            title,
+            msg,
             human_date,
             "open_log_modal",
             msg)
     }
 
+    readonly property string check_internet_connection_text: qsTr("Please check your internet connection (e.g. VPN service or firewall might block it).")
     function onEnablingCoinFailedStatus(coin, error, human_date, timestamp)
     {
         // Ignore if coin already enabled (e.g. parent chain in batch)
@@ -291,10 +298,22 @@ DexPopup
             return
         }
 
+        // Check if there is mismatch error, ignore this one
+        for (let n of notifications_list)
+        {
+            if (n.event_name === "onMismatchCustomCoinConfiguration" && n.params.asset === coin)
+            {
+                console.trace()
+                return
+            }
+        }
+
+        // Display the notification
+        const title = qsTr("Failed to enable %1", "TICKER").arg(coin)
+
         error = check_internet_connection_text + "\n\n" + error
 
-        newNotification(
-            enablingCoinFailedStatusNotification,
+        newNotification("onEnablingCoinFailedStatus",
             {
                 coin,
                 error,
@@ -302,15 +321,20 @@ DexPopup
                 timestamp
             },
             timestamp,
+            title,
+            check_internet_connection_text,
             human_date,
             "open_log_modal",
             error)
+
+        toast.show(title, General.time_toast_important_error, error)
     }
 
     function onDisablingCoinFailedStatus(coin, error, human_date, timestamp)
     {
-        newNotification(
-            disablingCoinFailedStatus,
+        const title = qsTr("Failed to disable %1", "TICKER").arg(coin)
+
+        newNotification("onDisablingCoinFailedStatus",
             {
                 coin,
                 error,
@@ -318,29 +342,71 @@ DexPopup
                 timestamp
             },
             timestamp,
+            title,
             human_date,
             "open_log_modal",
             error)
-        toast.show(qsTr("Failed to disable %1", "TICKER").arg(coin), General.time_toast_important_error, error)
+        toast.show(title, General.time_toast_important_error, error)
     }
 
     function onEndpointNonReacheableStatus(base_uri, human_date, timestamp)
     {
-        newNotification(
-            endpointNonReacheableStatus,
+        const title = qsTr("Endpoint not reachable")
+
+        const error = qsTr("Could not reach to endpoint") + ". " + check_internet_connection_text + "\n\n" + base_uri
+
+        newNotification("onEndpointNonReacheableStatus",
             {
                 base_uri,
                 human_date,
                 timestamp
             },
             timestamp,
+            title,
+            base_uri,
             human_date,
             "open_log_modal",
-            qsTr("Could not reach to endpoint") + ". " + check_internet_connection_text + "\n\n" + base_uri)
+            error)
 
-        toast.show(qsTr("Endpoint not reachable"), General.time_toast_important_error, error)
+        toast.show(title, General.time_toast_important_error, error)
     }
 
+    function onMismatchCustomCoinConfiguration(asset, human_date, timestamp)
+    {
+        const title = qsTr("Mismatch at %1 custom asset configuration", "TICKER").arg(asset)
+
+        newNotification("onMismatchCustomCoinConfiguration",
+            {
+                asset,
+                human_date,
+                timestamp
+            },
+            timestamp,
+            title,
+            qsTr("Application needs to be restarted for %1 custom asset.", "TICKER").arg(asset),
+            human_date)
+
+        toast.show(title, General.time_toast_important_error, "", true, true)
+    }
+
+    function onBatchFailed(reason, from, human_date, timestamp)
+    {
+        const title = qsTr("Batch %1 failed. Reason: %2").arg(from).arg(reason)
+
+        newNotification("onBatchFailed",
+            {
+                human_date,
+                timestamp
+            },
+            timestamp,
+            title,
+            reason,
+            human_date)
+
+        toast.show(title, General.time_toast_important_error, reason)
+    }
+
+    // System
     Component.onCompleted:
     {
         API.app.notification_mgr.updateSwapStatus.connect(onUpdateSwapStatus)
@@ -349,8 +415,9 @@ DexPopup
         API.app.notification_mgr.enablingCoinFailedStatus.connect(onEnablingCoinFailedStatus)
         API.app.notification_mgr.disablingCoinFailedStatus.connect(onDisablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.connect(onEndpointNonReacheableStatus)
+        API.app.notification_mgr.mismatchCustomCoinConfiguration.connect(onMismatchCustomCoinConfiguration)
+        API.app.notification_mgr.batchFailed.connect(onBatchFailed)
     }
-    
     Component.onDestruction:
     {
         API.app.notification_mgr.updateSwapStatus.disconnect(onUpdateSwapStatus)
@@ -359,6 +426,14 @@ DexPopup
         API.app.notification_mgr.enablingCoinFailedStatus.disconnect(onEnablingCoinFailedStatus)
         API.app.notification_mgr.disablingCoinFailedStatus.disconnect(onDisablingCoinFailedStatus)
         API.app.notification_mgr.endpointNonReacheableStatus.disconnect(onEndpointNonReacheableStatus)
+        API.app.notification_mgr.mismatchCustomCoinConfiguration.disconnect(onMismatchCustomCoinConfiguration)
+        API.app.notification_mgr.batchFailed.disconnect(onBatchFailed)
+    }
+
+    function displayMessage(title, message)
+    {
+        if (API.app.settings_pg.notification_enabled)
+            tray.showMessage(title, message)
     }
 
     SystemTrayIcon
@@ -497,6 +572,7 @@ DexPopup
                                 width: 23
                                 height: 23
                                 radius: 12
+                                gradient: notification_map[modelData.kind].gradient
                                 anchors.right: parent.right
                                 anchors.rightMargin: -5
                                 y: 13
@@ -505,7 +581,7 @@ DexPopup
                                 {
                                     anchors.centerIn: parent
                                     size: 16
-                                    icon: getNotificationIcon(modelData)
+                                    icon: notification_map[modelData.kind].icon
                                 }
                             }
                         }
@@ -526,7 +602,7 @@ DexPopup
 
                                 DefaultText
                                 {
-                                    text: getNotificationTitle(modelData)
+                                    text: modelData.title
                                     font: DexTypo.subtitle1
                                     width: parent.width
                                     wrapMode: Label.Wrap
@@ -534,7 +610,7 @@ DexPopup
 
                                 DefaultText
                                 {
-                                    text: getNotificationMsg(modelData)
+                                    text: modelData.message
                                     font: DexTypo.subtitle2
                                     width: parent.width - 20
                                     wrapMode: Label.Wrap
@@ -564,8 +640,11 @@ DexPopup
                                     let name
                                     switch (modelData.event_name)
                                     {
-                                        case enablingCoinFailedStatusNotification:
+                                        case "onEnablingCoinFailedStatus":
                                             name = "repeat"
+                                            break
+                                        case "onMismatchCustomCoinConfiguration":
+                                            name = "restart-alert"
                                             break
                                         default:
                                             name = "check"
@@ -589,10 +668,16 @@ DexPopup
                                     // Action
                                     switch (event_before_removal.event_name)
                                     {
-                                        case enablingCoinFailedStatusNotification:
+                                        case "onEnablingCoinFailedStatus":
                                             removeNotification()
                                             console.log("Retrying to enable", event_before_removal.params.coin, "asset...")
                                             API.app.enable_coins([event_before_removal.params.coin])
+                                            break
+
+                                        case "onMismatchCustomCoinConfiguration":
+                                            console.log("Restarting for", event_before_removal.params.asset, "custom asset configuration mismatch...")
+                                            root.close()
+                                            restart_modal.open()
                                             break
 
                                         default:
@@ -625,7 +710,6 @@ DexPopup
         {
             text: qsTr('Mark all as read')
             height: 40
-            width: 260
             Layout.alignment: Qt.AlignHCenter
             onClicked: root.reset()
         }

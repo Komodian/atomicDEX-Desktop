@@ -116,7 +116,6 @@ MouseArea
                                     title: qsTr("Privacy status"),
                                     text: qsTr("Privacy mode disabled successfully"),
                                     yesButtonText: qsTr("Ok"), titleBold: true,
-                                    showCancelBtn: false,
                                     standardButtons: Dialog.Ok
                                 })
                             }
@@ -127,7 +126,6 @@ MouseArea
                                     title: qsTr("Wrong password!"),
                                     text: "%1 ".arg(wallet_name) + qsTr("wallet password is incorrect"),
                                     warning: true,
-                                    showCancelBtn: false,
                                     standardButtons: Dialog.Ok, titleBold: true,
                                     yesButtonText: qsTr("Ok"),
                                 })

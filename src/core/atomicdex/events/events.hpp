@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright © 2013-2022 The Komodo Platform Developers.                      *
+ * Copyright © 2013-2021 The Komodo Platform Developers.                      *
  *                                                                            *
  * See the AUTHORS, DEVELOPER-AGREEMENT and LICENSE files at                  *
  * the top-level directory of this distribution for the individual copyright  *
@@ -20,6 +20,7 @@
 #include <entt/core/type_info.hpp>
 #include <entt/core/type_traits.hpp>
 
+//! Project Headers
 #include <atomicdex/config/coins.cfg.hpp>
 
 namespace atomic_dex
@@ -30,6 +31,8 @@ namespace atomic_dex
     using gui_leave_trading     = entt::tag<"gui_leave_trading"_hs>;
     using mm2_initialized       = entt::tag<"mm2_running_and_enabling"_hs>;
     using default_coins_enabled = entt::tag<"default_coins_enabled"_hs>;
+    using zhtlc_enter_enabling      = entt::tag<"zhtlc_enter_enabling"_hs>;
+    using zhtlc_leave_enabling      = entt::tag<"zhtlc_leave_enabling"_hs>;
     using band_oracle_refreshed     = entt::tag<"band_oracle_refreshed"_hs>;
     using current_currency_changed  = entt::tag<"update_orders_and_swap_values"_hs>;
     using force_update_providers    = entt::tag<"force_update_providers"_hs>;
@@ -64,6 +67,17 @@ namespace atomic_dex
     {
         std::string coin;
         std::string reason;
+    };
+
+    struct batch_failed
+    {
+        std::string from;
+        std::string reason;
+    };
+
+    struct mismatch_configuration_custom_coin
+    {
+        std::string coin;
     };
 
     struct endpoint_nonreacheable

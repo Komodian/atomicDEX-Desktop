@@ -4,7 +4,6 @@ import Qaterial 1.0 as Qaterial
 import QtQuick.Layouts 1.12
 import App 1.0
 import Dex.Themes 1.0 as Dex
-import "../Constants"
 
 Popup
 {
@@ -12,7 +11,7 @@ Popup
 
     id: dialog
     width: 420
-    height: _insideColumn.height > dialog.height ? _insideColumn.height + 82 : dialog.height
+    height: _insideColumn.height >  dialog.height ? _insideColumn.height + 82 : dialog.height
     dim: true
     modal: true
     anchors.centerIn: Overlay.overlay
@@ -55,7 +54,6 @@ Popup
     property int standardButtons: Dialog.NoButton
     property string yesButtonText: ""
     property string cancelButtonText: ""
-    property bool showCancelBtn: true
     property bool getText: false
     property bool isPassword: false
     property bool centerAlign: false
@@ -162,7 +160,6 @@ Popup
                         placeholderText: dialog.placeholderText
                         field.placeholderText: ""
                         field.forceFocus: forceFocus
-                        max_length: dialog.isPassword ? General.max_std_pw_length : 40
                         field.rightPadding: dialog.isPassword ? 55 : 20
                         field.leftPadding: dialog.isPassword ? 70 : 20
                         field.echoMode: dialog.isPassword ? TextField.Password : TextField.Normal
@@ -257,7 +254,6 @@ Popup
                     DexAppButton
                     {
                         id: cancelBtn
-                        visible: showCancelBtn
                         text: dialog.cancelButtonText !== "" ? dialog.cancelButtonText : "Cancel"
                         height: 40
                         leftPadding: 20
@@ -277,7 +273,7 @@ Popup
                     {
                         text: dialog.yesButtonText !== "" ? dialog.yesButtonText : "Yes"
                         height: 40
-                        width: showCancelBtn ? cancelBtn.width : 90
+                        width: cancelBtn.width
                         leftPadding: 20
                         rightPadding: 20
                         radius: 18
