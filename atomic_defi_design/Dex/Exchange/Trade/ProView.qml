@@ -40,14 +40,11 @@ RowLayout
 {
     id: form
 
-    property alias chart: chart
     property alias tickerSelectors: selectors
     property alias trInfo: tradingInfo
     property alias orderBook: orderBook
     property alias bestOrders: bestOrders
     property alias placeOrderForm: placeOrderForm
-
-    spacing: 16
 
     function selectOrder(is_asks, coin, price, quantity, price_denom, price_numer, quantity_denom, quantity_numer, min_volume, base_min_volume, base_max_volume, rel_min_volume, rel_max_volume, base_max_volume_denom, base_max_volume_numer, uuid)
     {
@@ -103,7 +100,7 @@ RowLayout
                            General.prettifyJSON(response.result), false)
 
                 General.prevent_coin_disabling.restart()
-                tabView.currentIndex = 1
+                tradingInfo.currentIndex = 1
             }
         }
     }
@@ -112,25 +109,13 @@ RowLayout
     {
         Layout.alignment: Qt.AlignTop
 
-        Layout.minimumWidth: chart.visible || selectors.visible || tradingInfo.visible ? 480 : -1
+        Layout.minimumWidth: selectors.visible || tradingInfo.visible ? 480 : -1
         Layout.maximumWidth: (!orderBook.visible && !bestOrders.visible) || (!placeOrderForm.visible) ? -1 : 735
         Layout.fillWidth: true
 
         Layout.fillHeight: true
 
-        spacing: 20
-
-        // Chart
-        Chart
-        {
-            id: chart
-
-            Layout.fillWidth: true
-
-            Layout.minimumHeight: isCollapsed() ? 60 : 190
-            Layout.maximumHeight: tradingInfo.isCollapsed() ? -1 : 360
-            Layout.fillHeight: !isCollapsed()
-        }
+        spacing: 10
 
         // Ticker selectors.
         TickerSelectors
@@ -147,29 +132,35 @@ RowLayout
             id: tradingInfo
 
             Layout.fillWidth: true
+            Layout.fillHeight: true
 
-            Layout.minimumHeight: isCollapsed() ? 60 : 380
-            Layout.maximumHeight: chart.isCollapsed() ? -1 : 500
-            Layout.fillHeight: !isCollapsed()
+            resizable: false
         }
     }
 
-    ColumnLayout
+    WidgetContainer
     {
+        property real _orderBookHeightRatio: 0.65
+        property real _bestOrdersHeightRatio: 0.35
+
         Layout.minimumWidth: orderBook.visible || bestOrders.visible ? 353 : -1
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.alignment: Qt.AlignTop
+        spacing: 4
+
+        onHeightChanged:
+        {
+            orderBook.height = getHeight(_orderBookHeightRatio);
+            bestOrders.height = getHeight(_bestOrdersHeightRatio);
+        }
 
         OrderBook.Vertical
         {
             id: orderBook
 
-            Layout.fillWidth: true
-
-            Layout.minimumHeight: isCollapsed() ? 70 : 365
-            Layout.maximumHeight: bestOrders.visible && !bestOrders.isCollapsed() ? 536 : -1
-            Layout.fillHeight: !isCollapsed()
+            width: parent.width
+            minHeight: 320
         }
 
         // Best Orders
@@ -177,10 +168,8 @@ RowLayout
         {
             id: bestOrders
 
-            Layout.fillWidth: true
-
-            Layout.minimumHeight: isCollapsed() ? 70 : 196
-            Layout.fillHeight: !isCollapsed()
+            width: parent.width
+            minHeight: 140
         }
     }
 
@@ -192,9 +181,9 @@ RowLayout
         Layout.minimumWidth: visible ? 302 : -1
         Layout.maximumWidth: 350
         Layout.fillWidth: true
-
-        Layout.minimumHeight: 571
         Layout.fillHeight: true
+
+        resizable: false
     }
 
     ModalLoader

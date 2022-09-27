@@ -5,6 +5,8 @@ import Qaterial 1.0 as Qaterial
 
 import QtGraphicalEffects 1.0
 
+import bignumberjs 1.0
+
 import App 1.0
 
 import "../../../Components"
@@ -15,17 +17,17 @@ FloatingBackground
     Layout.fillWidth: true
 
     property var            details
-    property alias          clickable: mouse_area.enabled
+    property alias          clickable: mouseArea.enabled
     readonly property bool  is_placed_order: !details ? false : details.order_id !== ''
 
     height: 50
 
-    color: mouse_area.containsMouse ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.floatingBackgroundColor
+    color: mouseArea.containsMouse ? Dex.CurrentTheme.accentColor : Dex.CurrentTheme.floatingBackgroundColor
     radius: 0
 
     DefaultMouseArea
     {
-        id: mouse_area
+        id: mouseArea
         anchors.fill: parent
         hoverEnabled: enabled
         onClicked:
@@ -52,7 +54,7 @@ FloatingBackground
                 id: statusText
                 anchors.centerIn: parent
 
-                visible: clickable ? ! details ? false : (details.is_swap || !details.is_maker) : false
+                visible: clickable ? !details ? false : (details.is_swap || !details.is_maker) : false
                 font.pixelSize: getStatusFontSize(details.order_status)
                 color: !details ? Dex.CurrentTheme.foregroundColor : getStatusColor(details.order_status)
                 text_value: !details ? "" : visible ? getStatusStep(details.order_status) : ''
@@ -91,7 +93,13 @@ FloatingBackground
                     anchors.verticalCenter: parent.verticalCenter
 
                     font.pixelSize: 12
-                    text: !details ? "" : details.base_amount
+                    text:
+                    {
+                        if (!details) return
+
+                        BigNumber.config({ DECIMAL_PLACES: 6 })
+                        return new BigNumber(details.base_amount).toString(10)
+                    }
                     privacy: is_placed_order
                     elide: Text.ElideRight
                     maximumLineCount: 1
@@ -127,7 +135,14 @@ FloatingBackground
                     anchors.verticalCenter: parent.verticalCenter
 
                     font.pixelSize: 12
-                    text: !details ? "" : details.rel_amount
+                    text:
+                    {
+                        if (!details) return
+
+                        BigNumber.config({ DECIMAL_PLACES: 6 })
+                        return new BigNumber(details.rel_amount).toString(10)
+                    }
+
                     privacy: is_placed_order
                     elide: Text.ElideRight
                     maximumLineCount: 1
@@ -246,7 +261,7 @@ FloatingBackground
                         font.pixelSize: Style.textSizeSmall4
                     }
 
-                    visible: (parent.visible && mouse_area.containsMouse) ?? false
+                    visible: (parent.visible && mouseArea.containsMouse) ?? false
                 }
             }
 
@@ -256,7 +271,7 @@ FloatingBackground
                 anchors.centerIn: parent
                 anchors.fill: parent
 
-                visible: (!is_history ? details.cancellable ?? false : false) === true ? (mouse_area.containsMouse || hovered) ? true : false : false
+                visible: (!is_history ? details.cancellable ?? false : false) === true ? (mouseArea.containsMouse || hovered) ? true : false : false
 
                 outlinedColor: Dex.CurrentTheme.noColor
                 hoverEnabled: true
