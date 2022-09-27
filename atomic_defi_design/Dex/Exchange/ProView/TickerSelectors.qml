@@ -10,7 +10,15 @@ Row
 {
     id: selectors
 
-    TickerSelector
+    function renewIndex()
+    {
+        selectorLeft.currentIndex = selectorLeft.indexOfValue(selectorLeft.ticker)
+        selectorRight.currentIndex = selectorRight.indexOfValue(selectorRight.ticker)
+        selectorLeft.searchBar.textField.text = ""
+        selectorRight.searchBar.textField.text = ""
+    }
+
+    SearchableTickerSelector
     {
         id: selectorLeft
 
@@ -18,8 +26,16 @@ Row
         height: parent.height
 
         left_side: true
-        ticker_list: API.app.trading_pg.market_pairs_mdl.left_selection_box
+        model: API.app.trading_pg.market_pairs_mdl.left_selection_box
         ticker: left_ticker
+        onTickerChanged: renewIndex()
+        Component.onCompleted: renewIndex()
+        Component.onDestruction: searchBar.textField.text = ""
+        onVisibleChanged:
+        {
+            renewIndex()
+            model.with_balance = false
+        }
     }
 
     SwapIcon
@@ -43,7 +59,7 @@ Row
         }
     }
 
-    TickerSelector
+    SearchableTickerSelector
     {
         id: selectorRight
 
@@ -51,7 +67,15 @@ Row
         height: parent.height
 
         left_side: false
-        ticker_list: API.app.trading_pg.market_pairs_mdl.right_selection_box
+        model: API.app.trading_pg.market_pairs_mdl.right_selection_box
         ticker: right_ticker
+        onTickerChanged: renewIndex()
+        Component.onCompleted: renewIndex()
+        Component.onDestruction: searchBar.textField.text = ""
+        onVisibleChanged:
+        {
+            renewIndex()
+            model.with_balance = false
+        }
     }
 }

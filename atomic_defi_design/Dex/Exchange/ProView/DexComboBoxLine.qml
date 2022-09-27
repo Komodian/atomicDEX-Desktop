@@ -4,9 +4,11 @@ import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 import QtQuick.Controls.Universal 2.15
 
+import "../../Constants" as Dex
 import "../../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
+import Dex.Components 1.0 as Dex
 
 RowLayout
 {
@@ -19,16 +21,40 @@ RowLayout
 
     Behavior on color { ColorAnimation { duration: Style.animationDuration } }
 
-    DexImage
+    Dex.Image
     {
         id: icon
-        source: General.coinIcon(ticker)
+        source: General.coinIcon(details.ticker)
         Layout.preferredWidth: 32
         Layout.preferredHeight: 45
         Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
         Layout.leftMargin: padding
         Layout.topMargin: Layout.leftMargin
         Layout.bottomMargin: Layout.leftMargin
+
+        DexRectangle
+        {
+            anchors.centerIn: parent
+            anchors.fill: parent
+            radius: 15
+            enabled: Dex.General.isZhtlc(details.ticker) ? Dex.General.zhtlcActivationProgress(details.activation_status, details.ticker) != 100 : false
+            visible: enabled
+            opacity: .9
+            color: Dex.DexTheme.backgroundColor
+        }
+
+        DexLabel
+        {
+            anchors.centerIn: parent
+            anchors.fill: parent
+            enabled: Dex.General.isZhtlc(details.ticker) ? Dex.General.zhtlcActivationProgress(details.activation_status, details.ticker) != 100 : false
+            visible: enabled
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            text: Dex.General.zhtlcActivationProgress(details.activation_status, details.ticker) + "%"
+            font: Dex.DexTypo.body2
+            color: Dex.DexTheme.greenColor
+        }
 
         ColumnLayout
         {
@@ -37,7 +63,7 @@ RowLayout
             anchors.verticalCenter: parent.verticalCenter
             width: root.width - 40
 
-            DexText
+            Dex.Text
             {
                 Layout.preferredWidth: parent.width - 15
 
@@ -48,7 +74,7 @@ RowLayout
                 wrapMode: Text.NoWrap
             }
 
-            DexText
+            Dex.Text
             {
                 id: bottom_line
 
@@ -58,7 +84,7 @@ RowLayout
                 text: real_value
                 Layout.fillWidth: true
                 elide: Text.ElideRight
-                color: DexTheme.foregroundColor
+                color: Dex.CurrentTheme.foregroundColor
                 font: DexTypo.body2
                 wrapMode: Label.NoWrap
                 ToolTip.text: real_value

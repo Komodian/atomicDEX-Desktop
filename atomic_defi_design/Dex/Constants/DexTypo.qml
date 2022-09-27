@@ -69,6 +69,12 @@ QtObject {
         family: fontFamily,
         weight: Font.Medium
     })
+    property font head8: Qt.font({
+        pixelSize: 16 * fontDensity,
+        letterSpacing: 0.15,
+        family: fontFamily,
+        weight: Font.Medium
+    })
     property font subtitle1: Qt.font({
         pixelSize: 16 * fontDensity,
         letterSpacing: 0.15,
@@ -92,6 +98,25 @@ QtObject {
         letterSpacing: 0.25,
         family: fontFamily,
         weight: Font.Normal
+    })
+    property font body3: Qt.font({
+        pixelSize: 12 * fontDensity,
+        letterSpacing: 0.25,
+        family: fontFamily,
+        weight: Font.Normal
+    })
+    property font body4: Qt.font({
+        pixelSize: 11 * fontDensity,
+        letterSpacing: 0.2,
+        family: fontFamily,
+        weight: Font.Normal
+    })
+    property font underline14: Qt.font({
+        pixelSize: 14 * fontDensity,
+        letterSpacing: 0.25,
+        family: fontFamily,
+        weight: Font.Normal,
+        underline: true
     })
     property font button: Qt.font({
         pixelSize: 16 * fontDensity,
@@ -121,6 +146,12 @@ QtObject {
     property font monoSpace: Qt.font({
         pixelSize: 14 * fontDensity,
         letterSpacing: 0,
+        family: "Courier",
+        weight: Font.Normal
+    })
+    property font monoSmall: Qt.font({
+        pixelSize: 14 * fontDensity,
+        letterSpacing: 0.4,
         family: "Courier",
         weight: Font.Normal
     })
