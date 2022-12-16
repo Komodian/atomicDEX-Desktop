@@ -18,17 +18,6 @@ namespace atomic_dex
         "NVC",
         "PAXG-ERC20",
         "USDT-ERC20",
-        "BET",
-        "BOTS",
-        "CRYPTO",
-        "DEX",
-        "HODL",
-        "JUMBLR",
-        "MGW",
-        "MSHARK",
-        "PANGEA",
-        "REVS",
-        "SUPERNET",
         "XPM",
         "ATOM"
     };
