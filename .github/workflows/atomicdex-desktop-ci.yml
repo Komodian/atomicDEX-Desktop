@@ -7,7 +7,7 @@ on:
     branches:
       - master
       - dev
-      - 0.5.7
+      - update057
   schedule:
     - cron: '0 0 * * 1'
 
