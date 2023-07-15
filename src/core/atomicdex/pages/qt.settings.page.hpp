@@ -45,6 +45,7 @@ namespace atomic_dex
         Q_PROPERTY(QString  current_fiat_sign               READ get_current_fiat_sign                                                          NOTIFY onFiatSignChanged)
         Q_PROPERTY(QString  current_fiat                    READ get_current_fiat                   WRITE set_current_fiat                      NOTIFY onFiatChanged)
         Q_PROPERTY(bool     notification_enabled            READ is_notification_enabled            WRITE set_notification_enabled              NOTIFY onNotificationEnabledChanged)
+        Q_PROPERTY(bool     spamfilter_enabled              READ is_spamfilter_enabled              WRITE set_spamfilter_enabled                NOTIFY onSpamFilterEnabledChanged)
         Q_PROPERTY(QVariant custom_token_data               READ get_custom_token_data              WRITE set_custom_token_data                 NOTIFY customTokenDataChanged)
         Q_PROPERTY(bool     fetching_custom_token_data_busy READ is_fetching_custom_token_data_busy WRITE set_fetching_custom_token_data_busy   NOTIFY customTokenDataStatusChanged)
         Q_PROPERTY(bool     fetching_priv_keys_busy         READ is_fetching_priv_key_busy          WRITE set_fetching_priv_key_busy            NOTIFY privKeyStatusChanged)
@@ -82,6 +83,8 @@ namespace atomic_dex
         [[nodiscard]] QString                   get_current_fiat() const;
         [[nodiscard]] bool                      is_notification_enabled() const;
         void                                    set_notification_enabled(bool is_enabled);
+        [[nodiscard]] bool                      is_spamfilter_enabled() const;
+        void                                    set_spamfilter_enabled(bool is_enabled);
         void                                    set_current_currency(const QString& current_currency);
         void                                    set_current_fiat(const QString& current_fiat);
         [[nodiscard]] bool                      is_fetching_custom_token_data_busy() const;
@@ -108,7 +111,6 @@ namespace atomic_dex
         Q_INVOKABLE void                        process_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath, CoinType coin_type);
         Q_INVOKABLE void                        process_qrc_20_token_add(const QString& contract_address, const QString& coingecko_id, const QString& icon_filepath);
         Q_INVOKABLE void                        submit();
-        Q_INVOKABLE void                        reset_coin_cfg();
         Q_INVOKABLE QStringList                 retrieve_seed(const QString& wallet_name, const QString& password);
         Q_INVOKABLE static QString              get_mm2_version();
         Q_INVOKABLE static QString              get_log_folder();
@@ -125,6 +127,7 @@ namespace atomic_dex
         void onFiatSignChanged();
         void onFiatChanged();
         void onNotificationEnabledChanged();
+        void onSpamFilterEnabledChanged();
         void customTokenDataChanged();
         void customTokenDataStatusChanged();
         void privKeyStatusChanged();

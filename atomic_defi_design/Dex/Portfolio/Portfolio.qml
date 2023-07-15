@@ -148,7 +148,7 @@ Item {
                         radius: 15
                         padding: 25
                         font: DexTypo.body2
-                        text: qsTr("ADD ASSET")
+                        text: qsTr("ADD CRYPTO")
                         onClicked: enable_coin_modal.open()
                     }
                 }
@@ -245,8 +245,6 @@ Item {
                             id: hide_zero_balance_checkbox
 
                             spacing: 2
-                            boxWidth: 24
-                            boxHeight: 24
 
                             label.wrapMode: Label.NoWrap
                             label.font.pixelSize: 14
