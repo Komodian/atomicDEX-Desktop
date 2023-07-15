@@ -225,7 +225,7 @@ SetupPage
                                 iconSize: 18
                                 anchors.centerIn: parent
                                 opacity: .8
-                                color: _deleteArea.containsMouse ? Dex.CurrentTheme.noColor : Dex.CurrentTheme.foregroundColor
+                                color: _deleteArea.containsMouse ? Dex.CurrentTheme.warningColor : Dex.CurrentTheme.foregroundColor
                             }
 
                             DexMouseArea
@@ -242,7 +242,7 @@ SetupPage
                                         text: qsTr("Enter password to confirm deletion of") + " %1 ".arg(wallet_name) + qsTr("wallet"),
                                         standardButtons: Dialog.Yes | Dialog.Cancel,
                                         warning: true,
-                                        iconColor: Dex.CurrentTheme.noColor,
+                                        iconColor: Dex.CurrentTheme.warningColor,
                                         isPassword: true,
                                         placeholderText: qsTr("Type password"),
                                         yesButtonText: qsTr("Delete"),
@@ -257,6 +257,7 @@ SetupPage
                                                     title: qsTr("Wallet status"),
                                                     text: "%1 ".arg(wallet_name) + qsTr("wallet deleted successfully"),
                                                     yesButtonText: qsTr("Ok"), titleBold: true,
+                                                    showCancelBtn: false,
                                                     standardButtons: Dialog.Ok
                                                 })
                                                 wallets = API.app.wallet_mgr.get_wallets()
@@ -269,6 +270,7 @@ SetupPage
                                                     text: "%1 ".arg(wallet_name) + qsTr("wallet password is incorrect"),
                                                     warning: true,
                                                     standardButtons: Dialog.Ok, titleBold: true,
+                                                    showCancelBtn: false,
                                                     yesButtonText: qsTr("Ok"),
                                                 })
                                             }

@@ -33,7 +33,7 @@ namespace
     void
     upgrade_cfg(atomic_dex::cfg& config)
     {
-        fs::path cfg_path = atomic_dex::utils::get_current_configs_path() / "cfg.json";
+        std::filesystem::path cfg_path = atomic_dex::utils::get_current_configs_path() / "cfg.json";
         QFile    file;
         file.setFileName(atomic_dex::std_path_to_qstring(cfg_path));
         file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -48,6 +48,7 @@ namespace
         config_json_data["current_fiat_sign"]     = config.current_fiat_sign;
         config_json_data["available_signs"]       = config.available_currency_signs;
         config_json_data["notification_enabled"]  = config.notification_enabled;
+        config_json_data["spamfilter_enabled"]    = config.spamfilter_enabled;
 
         file.close();
 
@@ -71,6 +72,15 @@ namespace atomic_dex
         j.at("available_signs").get_to(config.available_currency_signs);
         j.at("current_fiat_sign").get_to(config.current_fiat_sign);
         j.at("notification_enabled").get_to(config.notification_enabled);
+
+        if (j.contains("spamfilter_enabled"))
+        {
+            j.at("spamfilter_enabled").get_to(config.spamfilter_enabled);
+        }
+        else
+        {
+            config.spamfilter_enabled = true;
+        }
     }
 
     void
@@ -83,17 +93,27 @@ namespace atomic_dex
         }
     }
 
+    void
+    change_spamfilter_status(cfg& config, bool is_enabled)
+    {
+        if (config.spamfilter_enabled != is_enabled)
+        {
+            config.spamfilter_enabled = is_enabled;
+            upgrade_cfg(config);
+        }
+    }
+
     cfg
     load_cfg()
     {
         cfg      out;
-        fs::path cfg_path = utils::get_current_configs_path() / "cfg.json";
-        if (not fs::exists(cfg_path))
+        std::filesystem::path cfg_path = utils::get_current_configs_path() / "cfg.json";
+        if (not std::filesystem::exists(cfg_path))
         {
-            fs::path original_cfg_path{ag::core::assets_real_path() / "config" / "cfg.json"};
+            std::filesystem::path original_cfg_path{ag::core::assets_real_path() / "config" / "cfg.json"};
             //! Copy our json to current version
             LOG_PATH_CMP("Copying app cfg: {} to {}", original_cfg_path, cfg_path);
-            fs::copy_file(original_cfg_path, cfg_path, get_override_options());
+            std::filesystem::copy_file(original_cfg_path, cfg_path, std::filesystem::copy_options::overwrite_existing);
         }
 
         QFile file;

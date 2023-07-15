@@ -283,12 +283,12 @@ Dex.MultipageModal
 
         footer:
         [
-            Dex.Button
+            Dex.CancelButton
             {
                 Layout.preferredWidth: 199
                 Layout.preferredHeight: 48
                 radius: 18
-                text: qsTr("Close")
+                text: qsTr("Cancel")
                 onClicked: root.close()
             },
 

@@ -17,7 +17,7 @@ DEX_NEW_LIB(core INTERFACE
             DEX_API="${DEX_API}" DEX_RPC="${DEX_RPC}" DEX_RPCPORT="${DEX_RPCPORT}" DEX_NAME="${DEX_DISPLAY_NAME}" DEX_WEBSITE_URL="${DEX_WEBSITE}"
             DEX_SUPPORT_URL="${DEX_SUPPORT_PAGE}" DEX_DISCORD_URL="${DEX_DISCORD}" DEX_TWITTER_URL="${DEX_TWITTER}"
             DEX_PRIMARY_COIN="${DEX_PRIMARY_COIN}" DEX_SECOND_PRIMARY_COIN="${DEX_SECOND_PRIMARY_COIN}" #DEX_COMMON_DATA_FOLDER="${DEX_COMMON_DATA_FOLDER}"
-            DEX_PROJECT_NAME="${DEX_PROJECT_NAME}" DEX_COMPANY_NAME="${DEX_COMPANY_NAME}"
+            DEX_PROJECT_NAME="${DEX_PROJECT_NAME}" DEX_COMPANY_NAME="${DEX_COMPANY_NAME}" DEX_VERSION="${DEX_VERSION}"
             DEX_REPOSITORY_OWNER="${DEX_REPOSITORY_OWNER}" DEX_REPOSITORY_NAME="${DEX_REPOSITORY_NAME}"
             DEX_CHECKSUM_API_URL="${DEX_CHECKSUM_API_URL}" DEX_APPDATA_FOLDER="${DEX_APPDATA_FOLDER}"
         INTERFACE_DEFS
@@ -54,6 +54,7 @@ set(TS_FILES
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_en.ts
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_fr.ts
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_de.ts
+        ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_es.ts
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_tr.ts
         ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages/atomic_defi_ru.ts)
 set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${CMAKE_SOURCE_DIR}/atomic_defi_design/assets/languages)
@@ -74,7 +75,7 @@ dex_generate_qrc(${CMAKE_SOURCE_DIR}/atomic_defi_design/Dex qml_qrc
 dex_generate_qrc(${CMAKE_SOURCE_DIR}/atomic_defi_design/assets assets_qrc 
     PATH_PREFIX "assets"
     FILES_TO_EXCLUDE ".gitignore;.DS_Store;CONTRIBUTING.txt;FONTLOG.txt;LICENCE-FAQ.txt;LICENCE.txt;README.txt;TRADEMARKS.txt;.ts;.qm;.qrc"
-    FILES "languages/atomic_defi_en.qm;languages/atomic_defi_de.qm;languages/atomic_defi_fr.qm;languages/atomic_defi_ru.qm;languages/atomic_defi_tr.qm")
+    FILES "languages/atomic_defi_en.qm;languages/atomic_defi_es.qm;languages/atomic_defi_de.qm;languages/atomic_defi_fr.qm;languages/atomic_defi_ru.qm;languages/atomic_defi_tr.qm")
 
 # Main executable
 add_executable(${PROJECT_NAME}

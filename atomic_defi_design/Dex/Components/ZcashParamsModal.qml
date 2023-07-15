@@ -78,7 +78,7 @@ Dex.MultipageModal
                 onClicked: Qt.openUrlExternally("https://www.coinbureau.com/education/zcash-ceremony/")
             },
             Item { Layout.fillWidth: true },
-            Dex.DefaultButton
+            Dex.CancelButton
             {
                 text: qsTr("Close")
                 onClicked: close()
@@ -89,6 +89,9 @@ Dex.MultipageModal
         Connections
         {
             target: Dex.API.app.zcash_params
+
+            // todo: can be improved.
+            //       put it maybe in the backend ?
             function onCombinedDownloadStatusChanged()
             {
                 let combined_progress = 0

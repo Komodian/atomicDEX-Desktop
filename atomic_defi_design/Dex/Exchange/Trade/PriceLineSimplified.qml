@@ -72,8 +72,7 @@ ColumnLayout
                 horizontalAlignment: Text.AlignRight
                 text_value: General.cex_icon + " " + qsTr("CEXchange rate")
                 font.pixelSize: fontSize
-
-                CexInfoTrigger {}
+                DefaultInfoTrigger { triggerModal: cex_info_modal }
             }
 
             // Price reversed
@@ -112,7 +111,7 @@ ColumnLayout
                 Layout.preferredHeight: 6
 
                 start_color: Dex.CurrentTheme.okColor
-                end_color: Dex.CurrentTheme.noColor
+                end_color: Dex.CurrentTheme.warningColor
 
                 AnimatedRectangle
                 {
@@ -147,7 +146,7 @@ ColumnLayout
             id: price_diff_text
             Layout.topMargin: 10
             Layout.alignment: Qt.AlignHCenter
-            color: parseFloat(cexPriceDiff) <= 0 ? Dex.CurrentTheme.okColor : Dex.CurrentTheme.noColor
+            color: parseFloat(cexPriceDiff) <= 0 ? Dex.CurrentTheme.okColor : Dex.CurrentTheme.warningColor
             text_value: (parseFloat(cexPriceDiff) > 0 ? qsTr("Expensive") : qsTr("Expedient")) + ":&nbsp;&nbsp;&nbsp;&nbsp;" + qsTr("%1 compared to CEX", "PRICE_DIFF%").arg("<b>" + General.formatPercent(General.limitDigits(cexPriceDiff)) + "</b>")
             font.pixelSize: fontSize
         }

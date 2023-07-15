@@ -8,6 +8,7 @@ import "../../../Components"
 import App 1.0
 import Dex.Themes 1.0 as Dex
 
+// todo: coding style is wrong, use camelCase.
 RowLayout
 {
     id: control
@@ -32,13 +33,12 @@ RowLayout
         width: btn_width
         height: parent.height
 
-        // Background when market mode is different
         DefaultRectangle
         {
             anchors.centerIn: parent
             width: parent.width
             height: parent.height
-            color: Dex.CurrentTheme.tradeMarketModeSelectorNotSelectedBackgroundColor
+            color: Dex.CurrentTheme.inputModifierBackgroundColor
         }
 
         DefaultText
@@ -93,13 +93,12 @@ RowLayout
         width: btn_width
         height: parent.height
 
-        // Background when market mode is different
         DefaultRectangle
         {
             anchors.centerIn: parent
             width: parent.width
             height: parent.height
-            color: Dex.CurrentTheme.tradeMarketModeSelectorNotSelectedBackgroundColor
+            color: Dex.CurrentTheme.inputModifierBackgroundColor
 
             DefaultMouseArea
             {
@@ -154,14 +153,13 @@ RowLayout
         width: btn_width
         height: parent.height
 
-        // Background when market mode is different
         DefaultRectangle
         {
             id: right_rect
             anchors.centerIn: parent
             width: parent.width
             height: parent.height
-            color: Dex.CurrentTheme.tradeMarketModeSelectorNotSelectedBackgroundColor
+            color: Dex.CurrentTheme.inputModifierBackgroundColor
         }
 
         DefaultText
@@ -218,7 +216,6 @@ RowLayout
         id: _fiat_label
         font.pixelSize: pixel_size
         color: Dex.CurrentTheme.foregroundColor2
-
-        CexInfoTrigger {}
+        DefaultInfoTrigger { triggerModal: cex_info_modal }
     }
 }

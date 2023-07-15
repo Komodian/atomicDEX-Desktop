@@ -205,6 +205,7 @@ Qaterial.Dialog
                             topPadding: 10
                             spacing: 15
 
+                            // Notifications toggle
                             RowLayout
                             {
                                 width: parent.width - 30
@@ -229,6 +230,32 @@ Qaterial.Dialog
                                 }
                             }
 
+                            // Spam filter toggle
+                            RowLayout
+                            {
+                                width: parent.width - 30
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 50
+
+                                DexLabel
+                                {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Layout.fillWidth: true
+                                    font: DexTypo.subtitle1
+                                    text: qsTr("Hide Poison Transactions in History")
+                                }
+
+                                Item { Layout.fillWidth: true }
+
+                                DexSwitch
+                                {
+                                    Layout.alignment: Qt.AlignVCenter
+                                    Component.onCompleted: checked = API.app.settings_pg.spamfilter_enabled
+                                    onCheckedChanged: API.app.settings_pg.spamfilter_enabled = checked
+                                }
+                            }
+
+                            // Max Coins Dropdown
                             RowLayout
                             {
                                 width: parent.width - 30
@@ -292,7 +319,7 @@ Qaterial.Dialog
                                             restart_modal.open()
                                             restart_modal.item.onTimerEnded = () =>
                                             {
-                                                API.app.settings_pg.reset_coin_cfg()
+                                                API.app.reset_coin_cfg()
                                             }
                                         }
                                     })
@@ -462,7 +489,7 @@ Qaterial.Dialog
                                                 standardButtons: Dialog.Yes | Dialog.Cancel,
                                                 closePolicy: Popup.NoAutoClose,
                                                 warning: true,
-                                                iconColor: Dex.CurrentTheme.noColor,
+                                                iconColor: Dex.CurrentTheme.warningColor,
                                                 isPassword: true,
                                                 placeholderText: qsTr("Type password"),
                                                 yesButtonText: qsTr("Confirm"),
@@ -481,6 +508,7 @@ Qaterial.Dialog
                                                             text: qsTr("2FA disabled successfully"),
                                                             yesButtonText: qsTr("Ok"),
                                                             titleBold: true,
+                                                            showCancelBtn: false,
                                                             standardButtons: Dialog.Ok
                                                         })
                                                         atomic_settings2.setValue("2FA", 0)
@@ -495,6 +523,7 @@ Qaterial.Dialog
                                                             warning: true,
                                                             standardButtons: Dialog.Ok,
                                                             titleBold: true,
+                                                            showCancelBtn: false,
                                                             yesButtonText: qsTr("Ok"),
                                                         })
                                                         checked = true

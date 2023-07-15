@@ -53,7 +53,7 @@ Dex.MultipageModal
         footer:
         [
             Item { Layout.fillWidth: true },
-            Dex.DefaultButton
+            Dex.CancelButton
             {
                 text: qsTr("Close")
                 onClicked: close()
@@ -69,13 +69,13 @@ Dex.MultipageModal
 
         Dex.DefaultText
         {
-            text: qsTr("Could not check new updates because of the following reason: \n%1").arg(Dex.API.app.updateCheckerService.updateInfo.status)
+            text: qsTr("Could not check new updates for the following reason: \n%1").arg(Dex.API.app.updateCheckerService.updateInfo.status)
         }
 
         footer:
         [
             Item { Layout.fillWidth: true },
-            Dex.DefaultButton
+            Dex.CancelButton
             {
                 text: qsTr("Close")
                 onClicked: close()
@@ -134,7 +134,7 @@ Dex.MultipageModal
         footer:
         [
             Item { Layout.fillWidth: true },
-            Dex.DefaultButton
+            Dex.CancelButton
             {
                 text: qsTr("Close")
                 onClicked: close()

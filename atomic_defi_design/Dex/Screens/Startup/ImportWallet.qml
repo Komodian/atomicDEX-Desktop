@@ -166,14 +166,13 @@ SetupPage
                         height: 40
                         width: 60
                         radius: 20
-                        color: Dex.CurrentTheme.accentColor
                         anchors.verticalCenter: parent.verticalCenter
                         Qaterial.ColorIcon
                         {
                             anchors.centerIn: parent
                             iconSize: 19
                             source: Qaterial.Icons.wallet
-                            color: Dex.CurrentTheme.foregroundColor
+                            color: Dex.CurrentTheme.inputLeftIconColor
                         }
                     }
                 }
@@ -182,6 +181,7 @@ SetupPage
                 {
                     id: _seedField
                     Layout.fillWidth: true
+                    max_length: General.max_pw_length
                     Layout.preferredHeight: 50
                     leftIcon: Qaterial.Icons.fileKey
                     field.font: DexTypo.body2
@@ -204,7 +204,7 @@ SetupPage
                     id: _seedError
                     visible: _seedField.error
                     text: qsTr("Your seed is not BIP39 compliant.\nTry again or select 'Allow custom seed' to continue.")
-                    color: Dex.CurrentTheme.noColor
+                    color: Dex.CurrentTheme.warningColor
                     Layout.preferredWidth: parent.width - 40
                     font: DexTypo.body2
                 }
@@ -236,7 +236,7 @@ SetupPage
                                 standardButtons: Dialog.Yes | Dialog.Cancel,
                                 validator: (text) =>
                                 {
-                                    if (text.toLowerCase() === qsTr("i understand"))
+                                    if ([qsTr("i understand"), qsTr("я согласен"), qsTr("je comprends"), qsTr("entiendo"), qsTr("anladım"), qsTr("ich verstehe"), ].includes(text.toLowerCase()))
                                     {
                                         allow_custom_seed.checked = true;
                                     }
@@ -244,7 +244,7 @@ SetupPage
                                     {
                                         allow_custom_seed.checked = false;
                                     }
-                                    return text.toLowerCase() === qsTr("i understand")
+                                    return [qsTr("i understand"), qsTr("я согласен"), qsTr("je comprends"), qsTr("entiendo"), qsTr("anladım"), qsTr("ich verstehe"), ].includes(text.toLowerCase())
                                 },
                                 yesButtonText: qsTr("Ok")
                             })
@@ -266,7 +266,7 @@ SetupPage
                     DefaultText
                     {
                         text_value: text_error
-                        color: Dex.CurrentTheme.noColor
+                        color: Dex.CurrentTheme.warningColor
                         visible: text !== ''
                     }
 
@@ -305,7 +305,7 @@ SetupPage
                 DexAppPasswordField
                 {
                     id: _inputPassword
-                    field.font: DexTypo.body2
+                    field.placeholderText: qsTr("Enter password")
                     Layout.fillWidth: true
                     Layout.preferredHeight: 50
                     field.onAccepted: trySubmit()
@@ -323,7 +323,6 @@ SetupPage
                 DexAppPasswordField
                 {
                     id: _inputPasswordConfirm
-                    field.font: DexTypo.body2
                     field.placeholderText: qsTr("Enter the same password to confirm")
                     Layout.fillWidth: true
                     Layout.preferredHeight: 50
@@ -363,7 +362,7 @@ SetupPage
                 DefaultText
                 {
                     text_value: text_error
-                    color: Dex.CurrentTheme.noColor
+                    color: Dex.CurrentTheme.warningColor
                     visible: text !== ''
                 }
             }

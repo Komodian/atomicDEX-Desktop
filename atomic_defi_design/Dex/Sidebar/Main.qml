@@ -26,6 +26,7 @@ Item
     signal lineSelected(var lineType)
     signal settingsClicked()
     signal supportClicked()
+    signal addCryptoClicked()
     signal privacySwitched(var checked)
     signal expanded(var isExpanded)
     signal expandStarted(var isExpanding)
@@ -34,9 +35,15 @@ Item
     height: parent.height
 
     // Background Rectangle
-    Rectangle
+    DefaultRectangle
     {
+        radius: 0
         anchors.fill: parent
+        anchors.rightMargin : - border.width
+        anchors.bottomMargin:  - border.width
+        anchors.leftMargin: - border.width
+        border.width: 1
+        border.color: Dex.CurrentTheme.lineSeparatorColor
         color: Dex.CurrentTheme.sidebarBgColor
     }
 
@@ -115,14 +122,9 @@ Item
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 62
 
+            onAddCryptoClicked: root.addCryptoClicked()
             onSettingsClicked: root.settingsClicked()
             onSupportClicked: root.supportClicked()
-        }
-
-        VerticalLine
-        {
-            height: parent.height
-            anchors.right: parent.right
         }
     }
 }
